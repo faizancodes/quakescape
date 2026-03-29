@@ -1,10 +1,15 @@
 import type {
+  EventDetailResponse,
+  GeocodeQueryResult,
   NominatimPlace,
   OpenMeteoWeatherResponse,
+  ReverseGeocodeResult,
+  RouteResponse,
   RouteSummary,
   UsgsEarthquakeFeed,
   UsgsEarthquakeFeature,
   UsgsEarthquakeSummary,
+  WeatherSummary,
 } from "@/lib/types";
 
 export const fetcher = async <T>(url: string): Promise<T> => {
@@ -27,20 +32,20 @@ export async function fetchUsgsEvent(eventId: string): Promise<UsgsEarthquakeFea
   return fetcher<UsgsEarthquakeFeature>(`/api/usgs/${eventId}`);
 }
 
-export async function fetchWeather(latitude: number, longitude: number): Promise<OpenMeteoWeatherResponse> {
-  return fetcher<OpenMeteoWeatherResponse>(`/api/weather?latitude=${latitude}&longitude=${longitude}`);
+export async function fetchWeather(latitude: number, longitude: number): Promise<WeatherSummary> {
+  return fetcher<WeatherSummary>(`/api/weather?latitude=${latitude}&longitude=${longitude}`);
 }
 
-export async function searchPlaces(query: string): Promise<NominatimPlace[]> {
-  return fetcher<NominatimPlace[]>(`/api/geocode/search?q=${encodeURIComponent(query)}`);
+export async function searchPlaces(query: string): Promise<GeocodeQueryResult> {
+  return fetcher<GeocodeQueryResult>(`/api/geocode/search?q=${encodeURIComponent(query)}`);
 }
 
-export async function reverseGeocode(latitude: number, longitude: number): Promise<NominatimPlace[]> {
-  return fetcher<NominatimPlace[]>(`/api/geocode/reverse?latitude=${latitude}&longitude=${longitude}`);
+export async function reverseGeocode(latitude: number, longitude: number): Promise<ReverseGeocodeResult> {
+  return fetcher<ReverseGeocodeResult>(`/api/geocode/reverse?latitude=${latitude}&longitude=${longitude}`);
 }
 
-export async function fetchRoute(origin: string, destination: string): Promise<RouteSummary> {
-  return fetcher<RouteSummary>(`/api/route?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`);
+export async function fetchRoute(origin: string, destination: string): Promise<RouteResponse> {
+  return fetcher<RouteResponse>(`/api/route?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`);
 }
 
 export function summarizeEarthquake(feature: UsgsEarthquakeFeature): UsgsEarthquakeSummary {
@@ -59,4 +64,8 @@ export function summarizeEarthquake(feature: UsgsEarthquakeFeature): UsgsEarthqu
     felt: feature.properties.felt,
     tsunami: feature.properties.tsunami,
   };
+}
+
+export async function fetchEventDetail(eventId: string): Promise<EventDetailResponse> {
+  return fetcher<EventDetailResponse>(`/api/usgs/${eventId}`);
 }

@@ -96,6 +96,46 @@ export interface UsgsEarthquakeSummary {
   tsunami: number;
 }
 
+export interface WeatherSummary {
+  latitude: number;
+  longitude: number;
+  current: OpenMeteoCurrentWeather;
+  hourly: OpenMeteoHourlyWeather;
+}
+
+export interface GeocodeQueryResult {
+  query: string;
+  places: NominatimPlace[];
+}
+
+export interface ReverseGeocodeResult {
+  latitude: number;
+  longitude: number;
+  places: NominatimPlace[];
+}
+
+export interface RouteRequest {
+  origin: string;
+  destination: string;
+}
+
+export interface RouteRequestCoordinates {
+  origin: GeoPoint;
+  destination: GeoPoint;
+}
+
+export interface RouteResponse extends RouteSummary {
+  origin: GeoPoint;
+  destination: GeoPoint;
+}
+
+export interface EventDetailResponse {
+  event: UsgsEarthquakeFeature;
+  summary: UsgsEarthquakeSummary;
+  weather?: WeatherSummary;
+  nearbyPlaces?: NominatimPlace[];
+}
+
 export interface OpenMeteoCurrentWeather {
   time: string;
   temperature_2m: number;
