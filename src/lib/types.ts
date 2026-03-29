@@ -249,6 +249,37 @@ export interface ComparisonRegion {
   centerLongitude: number;
   radiusKm: number;
   distanceKm?: number;
+  eventCount?: number;
+  averageMagnitude?: number;
+  averageDepthKm?: number;
+  heatmapIntensity?: number;
+}
+
+export interface EventSequenceSummary {
+  id: string;
+  title: string;
+  startTime: number;
+  endTime: number;
+  eventCount: number;
+  maxMagnitude: number;
+  averageMagnitude: number;
+  averageDepthKm: number;
+  aftershockCount: number;
+  weatherComplicationScore: number;
+}
+
+export interface ComparisonMetric {
+  label: string;
+  value: number;
+  normalized: number;
+  unit?: string;
+}
+
+export interface HeatmapCell {
+  latitude: number;
+  longitude: number;
+  intensity: number;
+  label: string;
 }
 
 export interface LoadingStateProps {
