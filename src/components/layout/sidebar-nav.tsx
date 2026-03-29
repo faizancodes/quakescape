@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: "/explore", label: "Explore" },
   { href: "/compare", label: "Compare" },
   { href: "/timeline", label: "Timeline" },
+  { href: "/quake/demo-1", label: "Event detail" },
 ];
 
 export function SidebarNav() {

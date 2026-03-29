@@ -59,5 +59,9 @@ const heatmap: HeatmapCell[] = Array.from({ length: DEFAULT_HEATMAP_GRID * 2 }, 
 }));
 
 export default function ComparePage() {
-  return <ComparisonPanel events={events} regions={regions} timeline={timeline} sequence={sequence} heatmap={heatmap} />;
+  return (
+    <div className="space-y-6">
+      <ComparisonPanel events={events} regions={regions} timeline={timeline} sequence={sequence} heatmap={heatmap} />
+    </div>
+  );
 }

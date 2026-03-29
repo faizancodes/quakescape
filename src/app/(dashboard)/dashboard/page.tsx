@@ -11,7 +11,7 @@ const DEMO_EVENTS = [
 export default function DashboardPage() {
   return (
     <div className="space-y-8">
-      <section className="rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-950/60 sm:p-8">
+      <section className="rounded-3xl border border-border-default bg-surface-level1 p-6 shadow-sm sm:p-8">
         <div className="max-w-3xl space-y-4">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-sky-600 dark:text-sky-400">
             Dashboard

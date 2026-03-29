@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { EventFilters } from "@/components/events/event-filters";
 import { EventList } from "@/components/events/event-list";
 import { SeismicMap } from "@/components/map/seismic-map";
@@ -15,13 +17,17 @@ const DEMO_EVENTS = [
 
 export default function ExplorePage() {
   const filters = useDashboardStore((state) => state.filters);
-  const filteredEvents = DEMO_EVENTS.filter((event) => {
-    const matchesQuery = filters.query ? event.place.toLowerCase().includes(filters.query.toLowerCase()) || event.title.toLowerCase().includes(filters.query.toLowerCase()) : true;
-    const matchesMagnitude = event.magnitude >= filters.minMagnitude && event.magnitude <= filters.maxMagnitude;
-    const matchesDepth = event.depthKm >= filters.minDepth && event.depthKm <= filters.maxDepth;
-    const matchesAlert = filters.alertStatus === "all" ? true : event.alert === filters.alertStatus;
-    return matchesQuery && matchesMagnitude && matchesDepth && matchesAlert;
-  });
+  const filteredEvents = useMemo(
+    () =>
+      DEMO_EVENTS.filter((event) => {
+        const matchesQuery = filters.query ? event.place.toLowerCase().includes(filters.query.toLowerCase()) || event.title.toLowerCase().includes(filters.query.toLowerCase()) : true;
+        const matchesMagnitude = event.magnitude >= filters.minMagnitude && event.magnitude <= filters.maxMagnitude;
+        const matchesDepth = event.depthKm >= filters.minDepth && event.depthKm <= filters.maxDepth;
+        const matchesAlert = filters.alertStatus === "all" ? true : event.alert === filters.alertStatus;
+        return matchesQuery && matchesMagnitude && matchesDepth && matchesAlert;
+      }),
+    [filters],
+  );
 
   return (
     <div className="space-y-6">
