@@ -1,22 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { fetchUsgsFeed, getErrorMessage } from "@/lib/api";
-import type { UsgsEarthquakeFeed } from "@/lib/types";
+import { fetchUsgsFeed, getErrorMessage, summarizeEarthquake } from "@/lib/api";
+import type { UsgsEarthquakeFeed, UsgsEarthquakeSummary } from "@/lib/types";
 
 interface UseUsgsEventsOptions {
   enabled?: boolean;
+  refreshIntervalMs?: number;
 }
 
 interface UseUsgsEventsResult {
   data: UsgsEarthquakeFeed | null;
+  summaries: UsgsEarthquakeSummary[];
   isLoading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
 }
 
-export function useUsgsEvents({ enabled = true }: UseUsgsEventsOptions = {}): UseUsgsEventsResult {
+export function useUsgsEvents({ enabled = true, refreshIntervalMs }: UseUsgsEventsOptions = {}): UseUsgsEventsResult {
   const [data, setData] = useState<UsgsEarthquakeFeed | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,10 +36,19 @@ export function useUsgsEvents({ enabled = true }: UseUsgsEventsOptions = {}): Us
   }, []);
 
   useEffect(() => {
-    if (enabled) {
-      void load();
-    }
+    if (!enabled) return;
+    void load();
   }, [enabled, load]);
 
-  return { data, isLoading, error, refetch: load };
+  useEffect(() => {
+    if (!enabled || !refreshIntervalMs) return;
+    const interval = window.setInterval(() => {
+      void load();
+    }, refreshIntervalMs);
+    return () => window.clearInterval(interval);
+  }, [enabled, load, refreshIntervalMs]);
+
+  const summaries = useMemo(() => data?.features.map((feature) => summarizeEarthquake(feature)) ?? [], [data]);
+
+  return { data, summaries, isLoading, error, refetch: load };
 }
