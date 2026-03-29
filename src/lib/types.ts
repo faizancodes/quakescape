@@ -134,6 +134,11 @@ export interface EventDetailResponse {
   summary: UsgsEarthquakeSummary;
   weather?: WeatherSummary;
   nearbyPlaces?: NominatimPlace[];
+  reverseGeocode?: ReverseGeocodeResult;
+  routes?: RouteResponse[];
+  riskScore?: RiskScoreBreakdown;
+  responseContext?: string[];
+  comparisonRegions?: ComparisonRegion[];
 }
 
 export interface OpenMeteoCurrentWeather {
@@ -226,6 +231,8 @@ export interface RiskScoreBreakdown {
   exposure: number;
   accessibility: number;
   total: number;
+  label: string;
+  severity: "low" | "moderate" | "high" | "critical";
 }
 
 export interface TimelinePoint {
@@ -241,6 +248,7 @@ export interface ComparisonRegion {
   centerLatitude: number;
   centerLongitude: number;
   radiusKm: number;
+  distanceKm?: number;
 }
 
 export interface LoadingStateProps {

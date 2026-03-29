@@ -69,3 +69,11 @@ export function summarizeEarthquake(feature: UsgsEarthquakeFeature): UsgsEarthqu
 export async function fetchEventDetail(eventId: string): Promise<EventDetailResponse> {
   return fetcher<EventDetailResponse>(`/api/usgs/${eventId}`);
 }
+
+export function formatRiskLabel(score: number): string {
+  if (score >= 85) return "Extreme";
+  if (score >= 70) return "Critical";
+  if (score >= 50) return "Elevated";
+  if (score >= 30) return "Moderate";
+  return "Low";
+}
